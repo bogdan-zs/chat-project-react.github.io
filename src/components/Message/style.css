@@ -1,0 +1,40 @@
+.Message {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.Message-text {
+    display: flex;
+    flex-direction: column;
+    background: #00adb5;
+    color: #393e46;
+    padding: 10px 5px;
+    box-shadow: 0 10px 20px rgba(0,173,181, 0.19), 0 6px 6px rgba(0,173,181, 0.23);
+    border-radius: 5px;
+    word-break: break-word;
+    order: 2;
+}
+.Message-date {
+    font-size: small;
+    font-weight: 400;
+    align-self: flex-end;
+    margin-top: 5px;
+}
+.Message-nickname {
+    margin-bottom: 5px;
+    color: #222831;
+    font-weight: bold;
+}
+.Message-avatar {
+    position: relative;
+    width: 50px;
+    margin: 0 10px;
+    order: 1;
+}
+.Message-avatar-img {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    border-radius: 50%;
+}
