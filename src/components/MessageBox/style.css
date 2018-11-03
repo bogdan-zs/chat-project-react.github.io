@@ -1,0 +1,15 @@
+.MessageBox {
+    width: 20%;
+    height: 100%;
+}
+.MessageBox-messagesList {
+    height: 85%;
+    overflow: auto;
+}
+.MessageBox-record {
+    list-style: none;
+}
+.MessageBox-input {
+    background: #222831;
+    height: 15%;
+}

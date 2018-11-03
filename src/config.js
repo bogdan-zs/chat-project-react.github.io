@@ -1,5 +1,6 @@
 import firebase from 'firebase'
 
+export const app = 'chat'
 let config = {
     apiKey: "AIzaSyDwdVu82MGlwZk-cj5yJeC_aH8jd8peORA",
     authDomain: "chat-9e391.firebaseapp.com",

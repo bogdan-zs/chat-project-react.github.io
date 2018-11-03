@@ -1,0 +1,33 @@
+.AuthForm {
+    background: #37778C;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    width: 40%;
+    height: 50%;
+    padding: 20px 40px;
+}
+.AuthForm-NavLink-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+.AuthForm-NavLink {
+    width: calc(50% - 10px);
+    box-shadow: none;
+    background: #3A4049;
+    padding: 10px 25px;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    font-size: large;
+}
+.AuthForm-NavLink:first-of-type {
+    margin-right: 10px;
+}
+.AuthForm-NavLink:last-of-type {
+    margin-left: 10px;
+}
+.AuthForm-NavLink_active {
+    background: #1E97A7;
+    color: #3A4049;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}

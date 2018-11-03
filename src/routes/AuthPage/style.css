@@ -1,0 +1,13 @@
+
+.AuthPage-wrapper  {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background-image: linear-gradient(to right top, #00adb5, #288fa2, #3a7288, #3f5768, #393e46);
+}
