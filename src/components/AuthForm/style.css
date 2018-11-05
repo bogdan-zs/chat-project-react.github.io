@@ -19,6 +19,7 @@
     text-decoration: none;
     text-align: center;
     font-size: large;
+    cursor: pointer;
 }
 .AuthForm-NavLink:first-of-type {
     margin-right: 10px;

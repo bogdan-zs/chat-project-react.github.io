@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames'
-import {converNickToRGB} from '../../ducks/utiles'
+import toMaterialStyle from 'material-color-hash'
 import './style.css'
 
 class Message extends Component {
@@ -10,7 +10,10 @@ class Message extends Component {
         const {avatar, nickname, date, text} = message
         const email = user && user.email
         const ownClassName = nickname === email ? 'Message-text_own' : null
-        // const nickColor = converNickToRGB(nickname)
+
+        const materialStyle= toMaterialStyle(nickname || '', '400')
+        const {backgroundColor} = materialStyle
+        const nickStyle = {color: backgroundColor, opacity: 0.9}
         // console.log(nickColor)
         return (
             <div className='Message'>
@@ -18,7 +21,7 @@ class Message extends Component {
                     <img src={avatar} alt={nickname} className={'Message-avatar-img'}/>
                 </div>
                 <div className={classNames('Message-text', ownClassName)}>
-                    <div className={'Message-nickname'}>{nickname}</div>
+                    <div className={'Message-nickname'} style={nickStyle}>{nickname}</div>
                     <div>{text}</div>
                     <div className={'Message-date'}>{date}</div>
                 </div>

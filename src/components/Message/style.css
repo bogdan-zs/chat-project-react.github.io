@@ -10,10 +10,10 @@
 .Message-text {
     display: flex;
     flex-direction: column;
-    background: #00adb5;
+    background: white;
     color: #393e46;
     padding: 10px 5px;
-    box-shadow: 0 10px 20px rgba(0,173,181, 0.19), 0 6px 6px rgba(0,173,181, 0.23);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     border-radius: 5px;
     word-break: break-word;
     order: 2;
@@ -28,7 +28,8 @@
 }
 .Message-nickname {
     margin-bottom: 5px;
-    font-weight: bold;
+    font-weight: 800;
+    letter-spacing: 0.04em;
 }
 .Message-avatar {
     position: relative;
@@ -37,7 +38,7 @@
     order: 1;
 }
 .Message-avatar-img {
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     position: absolute;
     width: 100%;
     bottom: 0;

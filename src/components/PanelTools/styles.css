@@ -1,0 +1,24 @@
+.Tools
+{
+    position: fixed;
+    top: 50%;
+    right: 10px;
+    width: 40px;
+    transition: all 0.5s ease-in;
+}
+.Tools-icon {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background: #00adb5;
+    fill: white;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.Tools:hover {
+    border-bottom-left-radius: 25px;
+    border-top-left-radius: 25px;
+    background: #00adb5;
+    width: 300px;
+}
+
