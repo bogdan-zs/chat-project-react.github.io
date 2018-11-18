@@ -1,7 +1,6 @@
 import {Map, OrderedMap} from 'immutable'
 
 export const fbDateToMap = (data, Record = Map) => {
-    console.dir(data)
     return (new OrderedMap(data)).mapEntries(([key, value]) => {
         return [key, new Record(value).set('uid', key)]
     })

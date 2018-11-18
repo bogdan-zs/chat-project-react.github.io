@@ -3,7 +3,7 @@
     height: 100%;
 }
 .MessageBox-messagesList {
-    height: 80%;
+    height: 90%;
     overflow: auto;
 }
 .MessageBox-record {
@@ -11,5 +11,4 @@
 }
 .MessageBox-input {
     background: #222831;
-    height: 20%;
 }

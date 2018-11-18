@@ -21,3 +21,23 @@ textarea::-webkit-input-placeholder
     color: white;
     opacity: 0.7;
 }
+
+/* width */
+.MessageInput-textarea::-webkit-scrollbar {
+    display: none;
+}
+
+/* Track */
+.MessageInput-textarea::-webkit-scrollbar-track {
+    display: none;
+}
+
+/* Handle */
+.MessageInput-textarea::-webkit-scrollbar-thumb {
+    display: none;
+}
+
+/* Handle on hover */
+.MessageInput-textarea::-webkit-scrollbar-thumb:hover {
+    display: none;
+}

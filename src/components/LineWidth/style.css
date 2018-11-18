@@ -1,0 +1,8 @@
+.SliderWithTooltip-wrapper {
+    position: absolute;
+    width: 300px;
+    right: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}

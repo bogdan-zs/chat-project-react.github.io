@@ -1,35 +1,26 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import Icon from '../../assets/panel'
-import DeleteIcon from '../../assets/delete'
-import './styles.css'
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
+import Icon from "../../assets/panel";
+import DeleteIcon from "../../assets/delete";
+import "./styles.css";
+import ColorsPicker from "../ColorsPicker";
+import LineWidth from "../LineWidth";
 
 class Tools extends Component {
-    state = {
-        isOpen: false
-    }
-
-    handleOpen = () => {
-        this.setState({isOpen: true})
-    }
-
-    handleClose = (ev) => {
-        this.setState({isOpen: false})
-    }
-    render() {
-        const {hidden, functions} = this.props
-        const {isOpen} = this.state
-
-        if (hidden) return null
+    getTools = () => {
+        const { functions } = this.props;
 
         return (
-            <div className='Tools'
-                 onMouseEnter={this.handleOpen}
-                 onMouseLeave={this.handleClose}>
-                {!isOpen && <Icon className='Tools-icon'/>}
-                {isOpen && <DeleteIcon onClick={functions['delete']}/>}
+            <div className={"Tools-icons"}>
+                <DeleteIcon onClick={functions["delete"]} />
+                <ColorsPicker canvasChanger={functions["color"]} />
+                <LineWidth canvasChanger={functions["width"]} />
             </div>
         );
+    };
+
+    render() {
+        return <div className="Tools">{this.getTools()}</div>;
     }
 }
 
