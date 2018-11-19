@@ -3,13 +3,7 @@ import PropTypes from "prop-types";
 import Message from "../Message";
 import "./style.css";
 import MessageInput from "../MessageInput";
-import { connect } from "react-redux";
-import {
-    messagesListSelector,
-    fetchAllMessages,
-    stateSelector
-} from "../../ducks/messages";
-import Loader from "../Loader";
+import MessagesList from "../MessagesList";
 
 const MAX_INPUT_HEIGHT = 40;
 
@@ -24,15 +18,6 @@ class MessageBox extends Component {
         messagesHeight: 90,
         inputHeight: 10
     });
-
-    componentDidMount() {
-        this.props.fetchAllMessages();
-    }
-
-    componentDidUpdate() {
-        if (!this.messagesBoxRef.current) return;
-        this.messagesBoxRef.current.scrollTop = this.messagesBoxRef.current.scrollHeight;
-    }
 
     handleKeyDownEnter = ev => {
         const textarea = ev.target;
@@ -67,7 +52,6 @@ class MessageBox extends Component {
     // };
 
     render() {
-        const { messages, loading } = this.props;
         const messagesStyle = {
             height: `${this.state.messagesHeight}%`
         };
@@ -76,36 +60,16 @@ class MessageBox extends Component {
             height: `${this.state.inputHeight}%`
         };
 
-        if (loading)
-            return (
-                <div className="MessageBox">
-                    <Loader />
-                </div>
-            );
-
         return (
             <div className="MessageBox" style={{ width: this.props.width }}>
-                <ul
-                    className="MessageBox-messagesList"
-                    ref={this.messagesBoxRef}
+                <div
                     style={messagesStyle}
+                    className={"MessageBox-messagesList"}
                 >
-                    {messages.map((message, index) => (
-                        <li key={message.uid} className="MessageBox-record">
-                            <Message
-                                user={this.props.user}
-                                message={message}
-                                nextNickname={
-                                    messages[index + 1] &&
-                                    messages[index + 1].nickname
-                                }
-                            />
-                        </li>
-                    ))}
-                </ul>
+                    <MessagesList />
+                </div>
                 <div className="MessageBox-input" style={inputStyle}>
                     <MessageInput
-                        user={this.props.user}
                         resetInputHeight={this.resetInputHeight}
                         handleKeyDownEnter={this.handleKeyDownEnter}
                     />
@@ -124,11 +88,4 @@ MessageBox.defaultProps = {
     messages: []
 };
 
-export default connect(
-    state => ({
-        user: state.user.user,
-        messages: messagesListSelector(state),
-        loading: stateSelector(state).loading
-    }),
-    { fetchAllMessages }
-)(MessageBox);
+export default MessageBox;

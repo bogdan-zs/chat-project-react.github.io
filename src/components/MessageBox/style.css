@@ -4,8 +4,6 @@
 }
 .MessageBox-messagesList {
     height: 90%;
-    overflow: auto;
-    overflow-x: hidden;
 }
 .MessageBox-record {
     list-style: none;

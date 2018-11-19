@@ -66,6 +66,6 @@ MessageInput.propTypes = {
 };
 
 export default connect(
-    null,
+    state => ({ user: state.user.user }),
     { addMessage }
 )(MessageInput);

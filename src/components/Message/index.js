@@ -22,36 +22,44 @@ class Message extends Component {
 
         return (
             <Motion
-                defaultStyle={{ marginLeft: START_MARGIN }}
+                defaultStyle={{ x: 220 }}
                 style={{
-                    marginLeft: spring(END_MARGIN)
+                    x: spring(0)
                 }}
             >
-                {interpoletedStyle => (
-                    <div className="Message" style={interpoletedStyle}>
-                        <div className="Message-avatar">
-                            {showAvatar && (
-                                <img
-                                    src={avatar}
-                                    alt={nickname}
-                                    className={"Message-avatar-img"}
-                                />
-                            )}
-                        </div>
+                {({ x }) => {
+                    return (
                         <div
-                            className={classNames("Message-text", ownClassName)}
+                            className="Message"
+                            style={{ transform: `translateX(${x}px)` }}
                         >
-                            <div
-                                className={"Message-nickname"}
-                                style={nickStyle}
-                            >
-                                {nickname.split("@")[0]}
+                            <div className="Message-avatar">
+                                {showAvatar && (
+                                    <img
+                                        src={avatar}
+                                        alt={nickname}
+                                        className={"Message-avatar-img"}
+                                    />
+                                )}
                             </div>
-                            <div>{text}</div>
-                            <div className={"Message-date"}>{date}</div>
+                            <div
+                                className={classNames(
+                                    "Message-text",
+                                    ownClassName
+                                )}
+                            >
+                                <div
+                                    className={"Message-nickname"}
+                                    style={nickStyle}
+                                >
+                                    {nickname.split("@")[0]}
+                                </div>
+                                <div>{text}</div>
+                                <div className={"Message-date"}>{date}</div>
+                            </div>
                         </div>
-                    </div>
-                )}
+                    );
+                }}
             </Motion>
         );
     }
