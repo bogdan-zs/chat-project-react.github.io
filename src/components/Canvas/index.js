@@ -91,7 +91,7 @@ class Canvas extends Component {
         return {
             delete: () => {
                 ctx.fillStyle = "white";
-                ctx.fillRect(0, 0, 10000, 10000);
+                ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
             },
             color: color => {
                 this.setState({
@@ -102,6 +102,9 @@ class Canvas extends Component {
             },
             width: lineWidth => {
                 this.setState({ lineWidth });
+            },
+            save: () => {
+                return this.canvas.toDataURL("image/png");
             }
         };
     };

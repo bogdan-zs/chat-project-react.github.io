@@ -5,6 +5,7 @@ import DeleteIcon from "../../assets/delete";
 import "./styles.css";
 import ColorsPicker from "../ColorsPicker";
 import LineWidth from "../LineWidth";
+import SaveCanvas from "../SaveCanvas";
 
 class Tools extends Component {
     getTools = () => {
@@ -15,6 +16,7 @@ class Tools extends Component {
                 <DeleteIcon onClick={functions["delete"]} />
                 <ColorsPicker canvasChanger={functions["color"]} />
                 <LineWidth canvasChanger={functions["width"]} />
+                <SaveCanvas canvasChanger={functions["save"]} />
             </div>
         );
     };

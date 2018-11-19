@@ -1,50 +1,56 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types'
-import ColorIcon from '../../assets/colors'
-import {SketchPicker} from 'react-color'
-import Modal from 'react-modal'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ColorIcon from "../../assets/colors";
+import { SketchPicker } from "react-color";
+import Modal from "react-modal";
 
-import './style.css'
+import "./style.css";
 
 class ColorsPicker extends Component {
     state = {
-        color: '#fff'
-    }
+        color: "#fff"
+    };
 
     handleClick = () => {
-        this.setState({isOpen: true})
-    }
+        this.setState({ isOpen: true });
+    };
 
     handleClose = () => {
-        this.setState({isOpen: false})
-    }
+        this.setState({ isOpen: false });
+    };
 
     onColorChange = color => {
-        this.setState({color: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`})
-        this.props.canvasChanger(color)
-    }
+        this.setState({
+            color: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${
+                color.rgb.a
+            })`
+        });
+        this.props.canvasChanger(color);
+    };
 
     getPicker = () => {
-
         return (
             <Modal
                 isOpen={this.state.isOpen}
                 onRequestClose={this.handleClose}
-                className={'Picker-card'}
-                overlayClassName={'Picker-wrapper'}
+                className={"Picker-card"}
+                overlayClassName={"Picker-wrapper"}
                 ariaHideApp={false}
             >
-                <SketchPicker color={this.state.color} onChangeComplete={this.onColorChange}/>
+                <SketchPicker
+                    color={this.state.color}
+                    onChangeComplete={this.onColorChange}
+                />
             </Modal>
-        )
-    }
+        );
+    };
 
     render() {
         return (
-            <div>
-                <ColorIcon onClick={this.handleClick}/>
+            <React.Fragment>
+                <ColorIcon onClick={this.handleClick} />
                 {this.getPicker()}
-            </div>
+            </React.Fragment>
         );
     }
 }

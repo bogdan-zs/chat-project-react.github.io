@@ -62,10 +62,10 @@ class LineWidth extends Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
                 {this.state.isOpen && this.getSlider()}
                 <LineWidthIcon onClick={this.openSlider} />
-            </div>
+            </React.Fragment>
         );
     }
 }
