@@ -4,6 +4,7 @@ import classNames from "classnames";
 import toMaterialStyle from "material-color-hash";
 import "./style.css";
 import { Motion, spring, presets } from "react-motion";
+import Avatar from "../UI/Avatar";
 
 const START_MARGIN = 220;
 const END_MARGIN = 7;
@@ -29,29 +30,13 @@ class Message extends Component {
             >
                 {({ x }) => {
                     return (
-                        <div
-                            className="Message"
-                            style={{ transform: `translateX(${x}px)` }}
-                        >
+                        <div className="Message" style={{ transform: `translateX(${x}px)` }}>
                             <div className="Message-avatar">
-                                {showAvatar && (
-                                    <img
-                                        src={avatar}
-                                        alt={nickname}
-                                        className={"Message-avatar-img"}
-                                    />
-                                )}
+                                {showAvatar && <img src={avatar} alt={nickname} className={"Message-avatar-img"} />}
                             </div>
-                            <div
-                                className={classNames(
-                                    "Message-text",
-                                    ownClassName
-                                )}
-                            >
-                                <div
-                                    className={"Message-nickname"}
-                                    style={nickStyle}
-                                >
+
+                            <div className={classNames("Message-text", ownClassName)}>
+                                <div className={"Message-nickname"} style={nickStyle}>
                                     {nickname.split("@")[0]}
                                 </div>
                                 <div>{text}</div>

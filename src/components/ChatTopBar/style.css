@@ -1,0 +1,14 @@
+.ChatTopBar {
+    color: white;
+    background: #393e46;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 10px 5px;
+    height: 100%;
+    width: 100%;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.ChatTopBar-title {
+    cursor: pointer;
+}
