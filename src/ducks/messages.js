@@ -5,7 +5,7 @@ import { all, put, call, takeEvery, take, spawn } from "redux-saga/effects";
 import { eventChannel } from "redux-saga";
 import { fbDateToMap } from "./utiles";
 import { createSelector } from "reselect";
-import { SIGN_IN_SUCCESS } from "./user";
+import { SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS } from "./user";
 
 export const moduleName = "messages";
 
@@ -92,6 +92,9 @@ export const realTimeSyncMessages = function*() {
             type: FETCH_ALL_SUCCESS,
             payload: data.val()
         });
+        // const { type } = yield take("*");
+        // console.log("---", type);
+        // if (type === SIGN_OUT_SUCCESS) yield call([chan, chan.close]);
     }
 };
 
