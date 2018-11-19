@@ -11,16 +11,16 @@ import {
 } from "../../ducks/messages";
 import Loader from "../Loader";
 
-const MAX_INPUT_HEIGHT = 30;
+const MAX_INPUT_HEIGHT = 40;
 
 class MessageBox extends Component {
     constructor(props) {
         super(props);
         this.messagesBoxRef = React.createRef();
-        this.state = this.initialState();
+        this.state = this.getInitialState();
     }
 
-    initialState = () => ({
+    getInitialState = () => ({
         messagesHeight: 90,
         inputHeight: 10
     });
@@ -34,21 +34,37 @@ class MessageBox extends Component {
         this.messagesBoxRef.current.scrollTop = this.messagesBoxRef.current.scrollHeight;
     }
 
-    handleKeyDownEnter = reset => {
-        if (reset) return this.setState(this.initialState());
+    handleKeyDownEnter = ev => {
+        const textarea = ev.target;
+        const heightPerCent =
+            (textarea.scrollTop / textarea.scrollHeight) * 100;
+        console.log(textarea.scrollTop);
+        if (this.state.inputHeight > MAX_INPUT_HEIGHT) return;
 
-        this.setState(state => {
-            if (state.inputHeight > MAX_INPUT_HEIGHT)
-                return {
-                    inputHeight: state.inputHeight,
-                    messagesHeight: state.messagesHeight
-                };
-            return {
-                inputHeight: state.inputHeight + 2,
-                messagesHeight: state.messagesHeight - 2
-            };
-        });
+        this.setState(prevState => ({
+            inputHeight: prevState.inputHeight + heightPerCent,
+            messagesHeight: prevState.messagesHeight - heightPerCent
+        }));
     };
+
+    resetInputHeight = () => {
+        this.setState(this.getInitialState());
+    };
+    // handleKeyDownEnter = reset => {
+    //     if (reset) return this.setState(this.initialState());
+
+    //     this.setState(state => {
+    //         if (state.inputHeight > MAX_INPUT_HEIGHT)
+    //             return {
+    //                 inputHeight: state.inputHeight,
+    //                 messagesHeight: state.messagesHeight
+    //             };
+    //         return {
+    //             inputHeight: state.inputHeight + 2,
+    //             messagesHeight: state.messagesHeight - 2
+    //         };
+    //     });
+    // };
 
     render() {
         const { messages, loading } = this.props;
@@ -90,6 +106,7 @@ class MessageBox extends Component {
                 <div className="MessageBox-input" style={inputStyle}>
                     <MessageInput
                         user={this.props.user}
+                        resetInputHeight={this.resetInputHeight}
                         handleKeyDownEnter={this.handleKeyDownEnter}
                     />
                 </div>

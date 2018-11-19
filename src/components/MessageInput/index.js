@@ -16,14 +16,14 @@ class MessageInput extends Component {
     constructor(props) {
         super(props);
         this.formRef = React.createRef();
+        this.state = {
+            text: ""
+        };
     }
 
-    state = {
-        text: ""
-    };
     onChange = ev => {
         // if (!this.state.text) this.props.handleKeyDownEnter(true); // reset height
-
+        this.props.handleKeyDownEnter(ev);
         this.setState({ text: ev.target.value });
     };
 
@@ -40,10 +40,8 @@ class MessageInput extends Component {
                     date
                 });
             this.setState({ text: "" });
-            this.props.handleKeyDownEnter(true);
+            this.props.resetInputHeight();
             ev.preventDefault();
-        } else if (ev.keyCode === 13 && ev.shiftKey) {
-            this.props.handleKeyDownEnter(false);
         }
     };
 
