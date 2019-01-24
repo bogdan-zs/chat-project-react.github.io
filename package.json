@@ -32,7 +32,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "mv build/* A:/qwe/public"
+    "postbuild": "mv build/* ~/chat-firebase-hosting/public"
   },
   "eslintConfig": {
     "extends": "react-app"

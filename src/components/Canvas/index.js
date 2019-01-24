@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./style.css";
 import Panel from "../PanelTools";
 import { connect } from "react-redux";
-import { sendPoint } from "../../ducks/points";
+import { sendPoint, deletePoints } from "../../ducks/points";
 import { asyncEach } from "../../helpers";
 import "paper/dist/paper-full";
 
@@ -89,9 +89,11 @@ class Canvas extends Component {
 
     panelOptions = () => {
         const ctx = this.ctx;
+        const { deletePoints } = this.props;
 
         return {
             delete: () => {
+                deletePoints();
                 ctx.fillStyle = "white";
                 ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
             },
@@ -125,5 +127,5 @@ Canvas.propTypes = {
 
 export default connect(
     state => ({ user: state.user.user, points: state.points.points }),
-    { sendPoint }
+    { sendPoint, deletePoints }
 )(Canvas);
