@@ -21,3 +21,9 @@ export const asyncEach = (array, func) => {
 
     next();
 };
+
+// export const asyncEach = (array, func) => {
+//     array.forEach((...args) => {
+//         setTimeout(() => func(...args), 0);
+//     });
+// };

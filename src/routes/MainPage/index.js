@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-import MessageBox from "../../components/MessageBox";
-import Canvas from "../../components/Canvas";
-import "./style.css";
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import MessageBox from '../../components/MessageBox';
+import Canvas from '../../components/Canvas';
+import './style.css';
 
 class MainPage extends Component {
     state = this.getInitialState();
@@ -26,25 +26,21 @@ class MainPage extends Component {
         ev.preventDefault();
 
         this.resizingFunc = this.handleResize(ev.clientX);
-        document.addEventListener("mousemove", this.resizingFunc);
-        document.addEventListener("mouseup", this.handleEndResizing);
+        document.addEventListener('mousemove', this.resizingFunc);
+        document.addEventListener('mouseup', this.handleEndResizing);
     };
 
     handleEndResizing = ev => {
-        document.removeEventListener("mousemove", this.resizingFunc);
-        document.removeEventListener("mouseup", this.handleEndResizing);
+        document.removeEventListener('mousemove', this.resizingFunc);
+        document.removeEventListener('mouseup', this.handleEndResizing);
     };
 
     render() {
         const { messagesWidth, canvasWidth } = this.state;
-        console.log("render");
         return (
             <div className="MainPage">
                 <MessageBox width={`${messagesWidth}%`} />
-                <div
-                    className="MainPage-changerWidth"
-                    onMouseDown={this.handleStartResize}
-                />
+                <div className="MainPage-changerWidth" onMouseDown={this.handleStartResize} />
                 <Canvas width={`${canvasWidth}%`} />
             </div>
         );

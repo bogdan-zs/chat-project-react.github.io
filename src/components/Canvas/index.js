@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import "./style.css";
-import Panel from "../PanelTools";
-import { connect } from "react-redux";
-import { sendPoint, deletePoints } from "../../ducks/points";
-import { asyncEach } from "../../helpers";
-import "paper/dist/paper-full";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import './style.css';
+import Panel from '../PanelTools';
+import { connect } from 'react-redux';
+import { sendPoint, deletePoints, loadPoints } from '../../ducks/points';
+import { asyncEach } from '../../helpers';
+import 'paper/dist/paper-full';
 
 class Canvas extends Component {
     state = {
         isDrawing: false,
-        color: "black",
+        color: 'black',
         lineWidth: 1
     };
     constructor(props) {
@@ -27,12 +27,13 @@ class Canvas extends Component {
         this.draw.prevY = ev.clientY - this.canvas.offsetTop;
 
         this.drawPixel(this.draw.prevX, this.draw.prevY, this.draw.prevX - 1, this.draw.prevY - 1);
-        this.canvas.addEventListener("mousemove", this.draw);
+        this.canvas.addEventListener('mousemove', this.draw);
 
         ev.preventDefault();
     };
 
     componentWillReceiveProps(nextProps) {
+        if (nextProps.points.toArray().length === 0) this.panelOptions().delete();
         asyncEach(nextProps.points.toArray(), ({ x, y }, index, array) => {
             const prevElem = array[index - 1];
 
@@ -48,14 +49,15 @@ class Canvas extends Component {
         this.refCanvas.current.height = this.refContainer.current.offsetHeight;
 
         this.canvas = this.refCanvas.current;
-        this.ctx = this.canvas.getContext("2d");
+        this.ctx = this.canvas.getContext('2d');
+        this.props.loadPoints();
     }
 
     endDraw = () => {
         this.setState({ isDrawing: false });
 
         this.props.sendPoint(this.props.user.email, -1, -1); // end drawing
-        this.canvas.removeEventListener("mousemove", this.draw);
+        this.canvas.removeEventListener('mousemove', this.draw);
     };
 
     drawPixel = (x, y, prevX, prevY) => {
@@ -67,7 +69,7 @@ class Canvas extends Component {
         this.ctx.strokeStyle = this.state.color;
         this.ctx.lineWidth = this.state.lineWidth;
 
-        this.ctx.lineJoin = "round";
+        this.ctx.lineJoin = 'round';
         this.ctx.beginPath();
         this.ctx.moveTo(prevX, prevY);
         this.ctx.lineTo(x, y);
@@ -94,7 +96,7 @@ class Canvas extends Component {
         return {
             delete: () => {
                 deletePoints();
-                ctx.fillStyle = "white";
+                ctx.fillStyle = 'white';
                 ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
             },
             color: color => {
@@ -106,7 +108,7 @@ class Canvas extends Component {
                 this.setState({ lineWidth });
             },
             save: () => {
-                return this.canvas.toDataURL("image/png");
+                return this.canvas.toDataURL('image/png');
             }
         };
     };
@@ -127,5 +129,5 @@ Canvas.propTypes = {
 
 export default connect(
     state => ({ user: state.user.user, points: state.points.points }),
-    { sendPoint, deletePoints }
+    { sendPoint, deletePoints, loadPoints }
 )(Canvas);
