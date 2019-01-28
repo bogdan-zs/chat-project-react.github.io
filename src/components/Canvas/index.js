@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './style.css';
 import Panel from '../PanelTools';
 import { connect } from 'react-redux';
-import { sendPoint, deletePoints, loadPoints } from '../../ducks/points';
+import points, { sendPoint, deletePoints, loadPoints } from '../../ducks/points';
 import { asyncEach } from '../../helpers';
 import 'paper/dist/paper-full';
 
@@ -32,14 +32,17 @@ class Canvas extends Component {
         ev.preventDefault();
     };
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.points.toArray().length === 0) this.panelOptions().delete();
-        asyncEach(nextProps.points.toArray(), ({ x, y }, index, array) => {
-            const prevElem = array[index - 1];
+    componentWillReceiveProps({ points, user }) {
+        if (points[user.email] && points[user.email].length === 0) this.panelOptions().delete();
 
-            if (!prevElem) this.drawPixel(x, y, x - 1, y - 1);
-            else this.drawPixel(x, y, prevElem.x, prevElem.y);
-        });
+        Object.values(points).forEach(points =>
+            asyncEach(points, ({ x, y }, index, array) => {
+                const prevElem = array[index - 1];
+
+                if (!prevElem) this.drawPixel(x, y, x - 1, y - 1);
+                else this.drawPixel(x, y, prevElem.x, prevElem.y);
+            })
+        );
 
         //console.log(nextProps.points.toArray())
     }
@@ -128,6 +131,6 @@ Canvas.propTypes = {
 };
 
 export default connect(
-    state => ({ user: state.user.user, points: state.points.points }),
+    state => ({ user: state.user.user, points: state.points.points.toObject() }),
     { sendPoint, deletePoints, loadPoints }
 )(Canvas);

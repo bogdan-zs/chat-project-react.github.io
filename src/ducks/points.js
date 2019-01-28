@@ -1,16 +1,20 @@
 import { eventChannel } from 'redux-saga';
 import { all, takeEvery, put, call, spawn, take, select } from 'redux-saga/effects';
-import { Record, List } from 'immutable';
+import { Record, Map } from 'immutable';
 import firebase from 'firebase';
-import { SIGN_IN_SUCCESS } from './user';
+import { createSelector } from 'reselect';
+import { SIGN_IN_SUCCESS, userEmailSelector } from './user';
+import { fbPointsToMap } from './utiles';
 
 const ReducerRecord = Record({
-    points: new List([])
+    points: new Map({})
 });
 
-const PointModel = Record({
-    point: null
-});
+// const PointModel = Record({
+//     x: null,
+//     y: null,
+//     uid: null // user emain in base64
+// });
 export const moduleName = 'points';
 
 const SEND_POINT_REQUEST = `${moduleName}/SEND_POINT_REQUEST`;
@@ -27,7 +31,7 @@ export default (state = new ReducerRecord(), action) => {
     switch (type) {
         case LOAD_ALL_POINTS_SUCCESS:
         case FETCH_POINT:
-            return state.set('points', new List(Object.values(payload || {})));
+            return state.set('points', fbPointsToMap(payload));
         case DELETE_POINT_SUCCESS:
             return new ReducerRecord();
         default:
@@ -35,6 +39,14 @@ export default (state = new ReducerRecord(), action) => {
     }
 };
 
+/**SELECTORS */
+export const poinstStateSelector = state => state[moduleName];
+export const pointsSelector = createSelector(
+    poinstStateSelector,
+    state => state.points
+);
+
+/**ACTIONS */
 export const sendPoint = (user, x, y) => ({
     type: SEND_POINT_REQUEST,
     payload: { user, x, y }
@@ -63,28 +75,34 @@ const realTimePointSync = function*() {
     while (true) {
         const { data } = yield take(chan);
         const state = yield select();
-        console.log('data', data.val());
-        const userEmail = state.user.user && state.user.user.email;
-        if (data.email !== userEmail)
-            yield put({
-                type: FETCH_POINT,
-                payload: data.val()
-            });
+        const userEmail = yield select(userEmailSelector);
+
+        const points = data.val();
+        if (pointsSelector(state).get(userEmail) && pointsSelector(state).get(userEmail).length !== 0) {
+            delete points[btoa(userEmail)];
+        }
+
+        yield put({
+            type: FETCH_POINT,
+            payload: points
+        });
     }
 };
 
-const sendPointSaga = function*(action) {
-    const ref = firebase.database().ref('points');
+const sendPointSaga = function*({ payload }) {
+    const ref = firebase.database().ref(`points/${btoa(payload.user)}`);
+    const point = { x: payload.x, y: payload.y };
 
     try {
-        yield call([ref, ref.push], action.payload);
+        yield call([ref, ref.push], point);
     } catch (e) {
         alert(e.message);
     }
 };
 
 const deletePointsSaga = function*(action) {
-    const ref = firebase.database().ref('points');
+    const userEmail = yield select(userEmailSelector);
+    const ref = firebase.database().ref(`points/${btoa(userEmail)}`);
 
     try {
         yield call([ref, ref.remove]);

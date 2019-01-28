@@ -1,11 +1,18 @@
-import {Map, OrderedMap} from 'immutable'
+import { Map, OrderedMap } from 'immutable';
 
 export const fbDateToMap = (data, Record = Map) => {
-    return (new OrderedMap(data)).mapEntries(([key, value]) => {
-        return [key, new Record(value).set('uid', key)]
-    })
-}
-function hashCode(str) { // java String#hashCode
+    return new OrderedMap(data).mapEntries(([key, value]) => {
+        return [key, new Record(value).set('uid', key)];
+    });
+};
+export const fbPointsToMap = data => {
+    const points = new OrderedMap(data);
+    return points.mapEntries(([key, value]) => {
+        return [atob(key), Object.values(value)];
+    });
+};
+function hashCode(str) {
+    // java String#hashCode
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -13,12 +20,10 @@ function hashCode(str) { // java String#hashCode
     return hash;
 }
 
-function intToRGB(i){
-    let c = (i & 0x00FFFFFF)
-        .toString(16)
-        .toUpperCase();
+function intToRGB(i) {
+    let c = (i & 0x00ffffff).toString(16).toUpperCase();
 
-    return "00000".substring(0, 6 - c.length) + c;
+    return '00000'.substring(0, 6 - c.length) + c;
 }
 
-export const converNickToRGB = nick => intToRGB(hashCode(nick))
+export const converNickToRGB = nick => intToRGB(hashCode(nick));
