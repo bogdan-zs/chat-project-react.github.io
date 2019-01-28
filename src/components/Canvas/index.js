@@ -43,8 +43,6 @@ class Canvas extends Component {
                 else this.drawPixel(x, y, prevElem.x, prevElem.y);
             })
         );
-
-        //console.log(nextProps.points.toArray())
     }
 
     componentDidMount() {

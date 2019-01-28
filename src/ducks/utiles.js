@@ -11,6 +11,7 @@ export const fbPointsToMap = data => {
         return [atob(key), Object.values(value)];
     });
 };
+
 function hashCode(str) {
     // java String#hashCode
     let hash = 0;

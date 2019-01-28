@@ -12,3 +12,7 @@
 .ChatTopBar-title {
     cursor: pointer;
 }
+.ChatTopBar-topbar {
+    font-size: 16px;
+    margin-left: 10px;
+}

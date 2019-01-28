@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Message from "../Message";
-import "./style.css";
-import MessageInput from "../MessageInput";
-import MessagesList from "../MessagesList";
-import ChatTopBar from "../ChatTopBar";
-import UsersList from "../UsersList";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Message from '../Message';
+import './style.css';
+import MessageInput from '../MessageInput';
+import MessagesList from '../MessagesList';
+import ChatTopBar from '../ChatTopBar';
+
 const users = [
-    { id: "787878", nickname: "zaseka.bogdan@yandex.com", isOnline: true, src: "https://picsum.photos/100/100" },
-    { id: "78787we8", nickname: "zaseka.bogdan@yandex.com", isOnline: false, src: "https://picsum.photos/100/100" },
-    { id: "7878ee78", nickname: "zaseka.bogdan@yandex.com", isOnline: true, src: "https://picsum.photos/100/100" }
+    { id: '787878', nickname: 'zaseka.bogdan@yandex.com', isOnline: true, src: 'https://picsum.photos/100/100' },
+    { id: '78787we8', nickname: 'zaseka.bogdan@yandex.com', isOnline: false, src: 'https://picsum.photos/100/100' },
+    { id: '7878ee78', nickname: 'zaseka.bogdan@yandex.com', isOnline: true, src: 'https://picsum.photos/100/100' }
 ];
 const MAX_INPUT_HEIGHT = 40;
 
@@ -58,11 +58,6 @@ class MessageBox extends Component {
 
         return (
             <div className="MessageBox" style={{ width: this.props.width }}>
-                {this.state.isOpenUserList && (
-                    <div className="MessageBox-usersList">
-                        <UsersList users={users} />
-                    </div>
-                )}
                 <div className="MessageBox-topBar">
                     <ChatTopBar onClick={this.handleShowUsers} />
                 </div>

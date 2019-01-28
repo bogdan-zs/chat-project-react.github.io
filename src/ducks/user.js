@@ -1,9 +1,10 @@
-import { all, call, put, takeEvery, take, spawn } from 'redux-saga/effects';
+import { all, call, put, takeEvery, take, spawn, select } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import { push } from 'react-router-redux';
 import firebase from 'firebase';
 import { createSelector } from 'reselect';
-import { Record } from 'immutable';
+import { Record, List } from 'immutable';
+import {fbPointsToMap} from './utiles'
 
 export const moduleName = 'user';
 
@@ -16,9 +17,13 @@ export const SIGN_UP_ERROR = `${moduleName}/SIGN_UP_SUCCESS`;
 export const SIGN_OUT_SUCCESS = `${moduleName}/SIGN_OUT_SUCCESS`;
 export const SIGN_OUT_REQUEST = `${moduleName}/SIGN_OUT_REQUEST`;
 export const WATCH_STATUS_REQUEST = `${moduleName}/WATCH_STATUS_REQUEST`;
+export const ONLINE = `${moduleName}/ONLINE`;
+export const OFFLINE = `${moduleName}/OFFLINE`;
+export const USERS_STATUS = `${moduleName}/USERS_STATUS`;
 
 const ReducerRecord = Record({
     user: null,
+    users: new List([]),
     error: null,
     loading: false
 });
@@ -36,6 +41,8 @@ export default (state = new ReducerRecord(), action) => {
         case SIGN_UP_SUCCESS:
         case SIGN_IN_SUCCESS:
             return state.set('user', payload).set('loading', false);
+            case USERS_STATUS:
+            return state.set('users', fbPointsToMap(payload))
         default:
             return state;
     }
@@ -47,6 +54,7 @@ export const userEmailSelector = createSelector(
     userStateSelector,
     user => user.user.email
 );
+export const usersSelector = createSelector(userStateSelector, state => state.users.toObject())
 
 /**ACTIONS */
 export const signIn = user => ({
@@ -62,6 +70,14 @@ export const signUp = user => ({
 export const signOut = () => ({
     type: SIGN_OUT_REQUEST
 });
+
+export const online = () => ({
+    type: ONLINE
+});
+export const offline = () => ({
+    type: OFFLINE
+});
+
 /**SAGAS */
 const signOutSaga = function*(action) {
     const ref = firebase.auth();
@@ -77,9 +93,14 @@ const signOutSaga = function*(action) {
 
 const signInSaga = function*(action) {
     const ref = firebase.auth();
+    const status = firebase.database().ref('statusUsers');
     try {
         yield call([ref, ref.signInWithEmailAndPassword], action.payload.email, action.payload.password);
         yield put(push('/'));
+        const userStatus = yield call([status, status.child], btoa(action.payload.email));
+
+        yield call([userStatus, userStatus.set], { isOnline: true });
+
         yield put({
             type: SIGN_IN_SUCCESS,
             payload: action.payload
@@ -140,10 +161,46 @@ export const watchStatusChange = function*() {
     }
 };
 
+const changedStatusSaga = function*({ type }) {
+    const userEmai = yield select(userEmailSelector);
+    const ref = firebase.database().ref(`statusUsers`);
+
+    try {
+        const userStatus = yield call([ref, ref.child], btoa(userEmai));
+
+        yield call([userStatus, userStatus.set], { isOnline: type === ONLINE ? true : false });
+    } catch (e) {
+        console.log(e.message);
+    }
+};
+const onlineUsersChanel = () =>
+    eventChannel(emit =>
+        firebase
+            .database()
+            .ref('statusUsers')
+            .on('value', data => emit({ data }))
+    );
+
+const onlineUsersSaga = function * () {
+    yield take(SIGN_IN_SUCCESS);
+
+    const chan = yield call(onlineUsersChanel);
+
+    while (true) {
+        const {data} = yield take(chan);
+
+        yield put({
+            type: USERS_STATUS,
+            payload: data.val()
+        })
+    }
+}
 export const saga = function*() {
     yield spawn(watchStatusChange);
+    yield spawn(onlineUsersSaga);
 
     yield all([
+        takeEvery([OFFLINE, ONLINE], changedStatusSaga),
         takeEvery(SIGN_IN_REQUEST, signInSaga),
         takeEvery(SIGN_UP_REQUEST, signUpSaga),
         takeEvery(SIGN_OUT_REQUEST, signOutSaga)
